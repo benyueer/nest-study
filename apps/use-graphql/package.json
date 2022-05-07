@@ -1,0 +1,21 @@
+{
+  "name": "use-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graphql-codegen --config codegen.yml"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "2.6.2",
+    "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/typescript": "2.4.10",
+    "@graphql-codegen/typescript-apollo-angular": "3.4.9",
+    "@graphql-codegen/typescript-operations": "2.3.7"
+  },
+  "dependencies": {
+    "@graphql-codegen/import-types-preset": "^2.1.17",
+    "@graphql-codegen/near-operation-file-preset": "^2.2.11",
+    "graphql": "^16.4.0"
+  }
+}

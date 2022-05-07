@@ -1,0 +1,9 @@
+# schema: ../nestdemo/schema.graphql
+# documents: ./src/app/service/graphql/operations/*.graphql
+# extensions:
+#   codegen:
+#     generates:
+#       ./generated-frontend.ts:
+#         plugins:
+#           - typescript
+#           - typescript-apollo-angular
