@@ -1,28 +1,49 @@
 import * as Types from '../generated/models';
 
-import { gql } from 'apollo-angular';
-import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
+function fetcher<TData, TVariables>(endpoint: string, requestInit: RequestInit, query: string, variables?: TVariables) {
+  return async (): Promise<TData> => {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      ...requestInit,
+      body: JSON.stringify({ query, variables }),
+    });
+
+    const json = await res.json();
+
+    if (json.errors) {
+      const { message } = json.errors[0];
+
+      throw new Error(message);
+    }
+
+    return json.data;
+  }
+}
 export type UserListQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
 export type UserListQuery = { __typename?: 'Query', userList: Array<{ __typename?: 'User', name: string }> };
 
-export const UserListDocument = gql`
+
+export const UserListDocument = `
     query userList {
   userList {
     name
   }
 }
     `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class UserListGQL extends Apollo.Query<UserListQuery, UserListQueryVariables> {
-    document = UserListDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
+export const useUserListQuery = <
+      TData = UserListQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables?: UserListQueryVariables,
+      options?: UseQueryOptions<UserListQuery, TError, TData>
+    ) =>
+    useQuery<UserListQuery, TError, TData>(
+      variables === undefined ? ['userList'] : ['userList', variables],
+      fetcher<UserListQuery, UserListQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, UserListDocument, variables),
+      options
+    );
