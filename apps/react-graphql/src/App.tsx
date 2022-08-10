@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import UserList from './components/userList';
+import { User } from './service/graphql/generated/models';
+import { useUserListQuery, useUserQuery } from './service/graphql/operations/user.generated';
 
 function App() {
+  // const { loading, error, data, refetch } = useUserListQuery()
+  const { loading, error, data, refetch } = useUserQuery({ variables: { id: 'qwe' } })
+  const [count, setCount] = useState(0)
+  if (loading) return <p>loading...</p>
+
+  if (error) return <p>'error'</p>
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={() => refetch()}>refresh</button>
+      {
+        data?.user.name
+      }
+      <button onClick={() => setCount(count + 1)}>{count}</button>
+      <UserList></UserList>
     </div>
   );
 }

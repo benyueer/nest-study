@@ -7,6 +7,10 @@ export class UserResolver {
   async userList() {
     return [{ name: 'John' }, { name: 'Doe' }];
   }
+  @Query(() => User)
+  async user(@Args('id') id: string) {
+    return { name: id };
+  }
   @Mutation(() => User)
   async createUser(@Args('data') data: CreateUserInput): Promise<User> {
     return {

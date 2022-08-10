@@ -1,0 +1,10 @@
+query userList {
+  userList {
+    name
+  }
+}
+query user($id: String!) {
+  user(id: $id) {
+    name
+  }
+}
