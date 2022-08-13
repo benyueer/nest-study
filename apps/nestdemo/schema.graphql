@@ -6,15 +6,31 @@ type User {
   name: String!
 }
 
+type Auth {
+  accessToken: String!
+}
+
+type Book {
+  name: String!
+}
+
 type Query {
   userList: [User!]!
   user(id: String!): User!
+  getBook(name: String!): Book!
 }
 
 type Mutation {
   createUser(data: CreateUserInput!): User!
+  login(data: LoginInput!): Auth!
 }
 
 input CreateUserInput {
   name: String!
+}
+
+input LoginInput {
+  name: String
+  email: String!
+  password: String!
 }

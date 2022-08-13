@@ -1,18 +1,17 @@
-import React from 'react'
-import { UserListQuery, useUserListQuery } from '../service/graphql/operations/user.generated'
+import React, { useEffect } from 'react'
+import { UserListQuery, useUserListLazyQuery, useUserListQuery } from '../service/graphql/operations/user.generated'
 import { QueryWare } from './queryWare'
 
-export default function userList() {
-  let query = useUserListQuery
+export default function UserList() {
+  const [getUserList, { loading, error, data }] = useUserListLazyQuery();
+  useEffect(() => {
+    getUserList()
+  }, [getUserList])
   return (
-    <QueryWare
-      query={query as any}
-    >
+    <div>
       {
-        (data: UserListQuery) => {
-          return data.userList.map((user) => <p key={user.name}>{user.name}</p>)
-        }
+        data?.userList.map((user) => user.name)
       }
-    </QueryWare>
+    </div>
   )
 }
