@@ -182,6 +182,33 @@ class UserResolver {
 }
 ```
 
+#### 认证
+新建`auth module`
+定义登陆相关操作
+
+配置jwt：
+安装相关包
+```bush
+yarn add nestjs/jwt @nestjs/passport passport passport-local
+```
+```ts
+JwtModule.register({
+  secret: 'secretKey',
+  signOptions: {
+    expiresIn: '60s',
+  },
+}),
+```
+新建`auth.guard`守卫路由
+```ts
+@Injectable()
+export class GqlAuthGuard extends AuthGuard('jwt') {
+  constructor(private jwtService: JwtService) {
+    super();
+  }
+}
+```
+
 
 #### redis
 #### mysql
